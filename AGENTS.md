@@ -41,11 +41,14 @@ tests/              # pytest test suite
 
 | Phase | Command / Notes |
 |-------|-----------------|
-| **Setup** | TODO |
-| **Tests** | TODO |
-| **Lint / Type** | TODO |
-| **Build** | `flask assets build` → bundles TS / SCSS via esbuild + libsass |
-| **Run** | `flask run` (auto-watch for TS / SCSS rebuilds in dev mode) |
+| **Setup (Backend)** | `python -m venv venv && source venv/bin/activate && pip install -r requirements.txt` |
+| **Setup (Frontend)** | `npm install` |
+| **Tests (Backend)** | `pytest tests/ --cov=src --cov-report=term-missing` |
+| **Tests (Frontend)** | `npm test` (Vitest or similar) |
+| **Lint / Type** | Backend: `mypy src/` / Frontend: `npm run type-check` |
+| **Build (Frontend)** | `npm run build` → bundles TS/SCSS to `/static/dist` via Vite |
+| **Run (Dev)** | Frontend: `npm run dev` (Vite HMR) + Backend: `flask run` |
+| **Run (Prod)** | `flask run` (serves pre-built static assets) |
 
 ---
 
@@ -57,13 +60,16 @@ tests/              # pytest test suite
 | RAM | 512 MB |
 | OS | Raspberry Pi OS Bookworm (64-bit) |
 | Expected runtime | < 120 MB RAM usage / < 15 % CPU idle load |
-| Build behavior | Local esbuild + libsass watch mode ≤ 3 s per update |
+| Build behavior | Vite dev mode HMR < 100 ms / Production build ≤ 10 s |
 
 The entire application must stay responsive under these limits.
 
 ---
 
 ## Module Notes
-- **`services/pixoo.py`** – HTTP API client for Pixoo 64 local protocol  
-- WIP
+- **`services/pixoo.py`** – HTTP API client for Pixoo 64 local protocol
+- **`services/fonts.py`** – BMFont rendering using bmfontify library
+- **`services/jobs.py`** – Background job queue via ThreadPoolExecutor
+- **`models.py`** – SQLite ORM models (SQLAlchemy 2.x)
+- **Frontend** – Vite + TypeScript + SCSS (Tabler UI), builds to `/static/dist`
 
