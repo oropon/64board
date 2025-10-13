@@ -27,27 +27,33 @@ It allows uploading or generating images (including AI-generated ones), overlayi
 ```
 64board/
 ├── backend/
-│   ├── app/              # Application source
-│   │   ├── __init__.py   # Flask factory (create_app)
-│   │   ├── models.py     # SQLAlchemy ORM models
-│   │   ├── routes/       # UI & API blueprints
-│   │   ├── services/     # Core logic (Pixoo, font, scheduler)
-│   │   └── templates/    # Jinja2 templates
-│   ├── static/
-│   │   └── dist/         # Vite build output (.gitignore)
-│   ├── tests/            # pytest test suite
-│   ├── config.py         # Flask configuration
-│   ├── wsgi.py           # WSGI entry point
-│   └── requirements.txt  # Python dependencies
+│   ├── app/
+│   │   ├── __init__.py          # Flask factory (create_app)
+│   │   ├── models.py            # SQLAlchemy ORM models
+│   │   ├── routes/
+│   │   │   ├── __init__.py
+│   │   │   └── ui.py            # Template routes
+│   │   ├── services/
+│   │   │   └── __init__.py
+│   │   └── templates/
+│   │       ├── base.html        # Base Jinja2 template
+│   │       └── index.html       # Main page
+│   ├── tests/                   # pytest test suite
+│   ├── config.py                # Flask configuration
+│   ├── wsgi.py                  # WSGI entry point
+│   ├── requirements.txt         # Python dependencies
+│   └── requirements-dev.txt     # Dev dependencies (pytest, mypy, etc.)
 ├── frontend/
-│   ├── src/              # TypeScript/SCSS source
-│   ├── public/           # Static assets (images, etc.)
-│   ├── package.json      # Node dependencies
-│   └── vite.config.ts    # Vite build configuration
-├── docs/                 # SDD / ADR design docs
+│   ├── src/                     # TypeScript/SCSS source
+│   └── public/                  # Static assets (images, etc.)
+├── docs/
+│   └── architecture_overview.md
 ├── AGENTS.md
-└── README.md
+├── README.md
+└── LICENSE
 ```
+
+**Note**: `backend/static/dist/` (Vite build output) is created after running `npm run build` and should be in `.gitignore`.
 
 → **Start by reading** [`docs/architecture_overview.md`](./docs/architecture_overview.md)
 
@@ -89,10 +95,10 @@ The entire application must stay responsive under these limits.
 - **`__init__.py`** – Flask application factory (`create_app()`)
 - **`models.py`** – SQLite ORM models (SQLAlchemy 2.x)
 - **`routes/ui.py`** – HTML template routes (render_template)
-- **`routes/api.py`** – JSON API endpoints (REST)
-- **`services/pixoo.py`** – HTTP API client for Pixoo 64 local protocol
-- **`services/fonts.py`** – BMFont rendering using bmfontify library
-- **`services/jobs.py`** – Background job queue via ThreadPoolExecutor
+- **`routes/api.py`** – JSON API endpoints (REST) *(to be implemented)*
+- **`services/pixoo.py`** – HTTP API client for Pixoo 64 local protocol *(to be implemented)*
+- **`services/fonts.py`** – BMFont rendering using bmfontify library *(to be implemented)*
+- **`services/jobs.py`** – Background job queue via ThreadPoolExecutor *(to be implemented)*
 - **`templates/`** – Jinja2 templates (base.html, index.html)
 
 ### Frontend (`frontend/src/`)

@@ -7,10 +7,10 @@
 │  backend/app/                                       │
 │  ├─ __init__.py         → Flask factory            │
 │  ├─ routes/ui.py        → HTML templates (Jinja2)  │
-│  ├─ routes/api.py       → REST JSON endpoints      │
-│  ├─ services/pixoo.py   → Pixoo 64 HTTP API        │
-│  ├─ services/fonts.py   → BMFont (bmfontify)       │
-│  ├─ services/jobs.py    → ThreadPoolExecutor       │
+│  ├─ routes/api.py       → REST JSON (TBD)          │
+│  ├─ services/pixoo.py   → Pixoo 64 HTTP API (TBD)  │
+│  ├─ services/fonts.py   → BMFont (bmfontify) (TBD) │
+│  ├─ services/jobs.py    → ThreadPoolExecutor (TBD) │
 │  ├─ models.py           → SQLite ORM models        │
 │  └─ templates/          → Jinja2 templates         │
 │       ├─ base.html                                 │
@@ -98,38 +98,38 @@
 │   │   ├── models.py           # SQLAlchemy ORM models
 │   │   ├── routes/
 │   │   │   ├── __init__.py
-│   │   │   ├── ui.py           # Template routes
-│   │   │   └── api.py          # JSON API endpoints
+│   │   │   └── ui.py           # Template routes
 │   │   ├── services/
-│   │   │   ├── __init__.py
-│   │   │   ├── pixoo.py        # Pixoo 64 HTTP client
-│   │   │   ├── fonts.py        # BMFont renderer
-│   │   │   └── jobs.py         # Background job queue
+│   │   │   └── __init__.py
 │   │   └── templates/
 │   │       ├── base.html       # Base Jinja2 template
 │   │       └── index.html      # Main page
-│   ├── static/
-│   │   └── dist/               # Vite build output (.gitignore)
 │   ├── tests/                  # pytest tests
 │   ├── config.py               # Flask configuration
 │   ├── wsgi.py                 # WSGI entry point
 │   ├── requirements.txt        # Python dependencies
-│   └── .env.example            # Environment variables template
+│   └── requirements-dev.txt    # Dev dependencies (pytest, mypy, etc.)
 ├── frontend/
-│   ├── src/
-│   │   ├── main.ts             # TypeScript entry
-│   │   └── styles/             # SCSS files
-│   ├── public/                 # Static assets (images, etc.)
-│   ├── package.json            # Node dependencies
-│   ├── vite.config.ts          # Vite configuration
-│   ├── tsconfig.json           # TypeScript configuration
-│   └── .env.example            # Frontend env vars
+│   ├── src/                    # TypeScript/SCSS source
+│   └── public/                 # Static assets (images, etc.)
 ├── docs/
 │   └── architecture_overview.md
 ├── AGENTS.md
 ├── README.md
-└── .gitignore
+└── LICENSE
 ```
+
+**Future additions** (as development progresses):
+- `backend/static/dist/` - Vite build output (created by `npm run build`, .gitignore)
+- `backend/app/routes/api.py` - JSON API endpoints
+- `backend/app/services/pixoo.py` - Pixoo 64 HTTP client
+- `backend/app/services/fonts.py` - BMFont renderer
+- `backend/app/services/jobs.py` - Background job queue
+- `frontend/package.json` - Node dependencies
+- `frontend/vite.config.ts` - Vite configuration
+- `frontend/tsconfig.json` - TypeScript configuration
+- `.gitignore` - Git ignore rules
+- `.env.example` - Environment variables template
 
 ---
 
