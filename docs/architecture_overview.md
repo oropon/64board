@@ -1,24 +1,37 @@
 # Architecture Overview — 64board
 
 ## 1. High-Level Architecture
-+––––––––––––––––––––––––––+
-| Flask (Python 3.12)                                |
-|  ├─ routes/ui.py        → HTML templates (Jinja2)  |
-|  ├─ routes/api.py       → REST JSON endpoints      |
-|  ├─ services/pixoo.py   → Pixoo 64 HTTP API        |
-|  ├─ services/fonts.py   → BMFont rendering (bmfontify) |
-|  ├─ services/jobs.py    → Job queue (ThreadPoolExecutor) |
-|  └─ models.py           → SQLite ORM models        |
-+––––––––––––––––––––––––––+
-│
-│ JSON / REST
-▼
-+––––––––––––––––––––––––––+
-| Front-End (Node + Vite + TypeScript + SCSS)        |
-|  ├─ Vite dev server (proxy to Flask in dev)       |
-|  ├─ TypeScript + Tabler UI + SCSS                 |
-|  └─ Built assets served via Flask in production   |
-+––––––––––––––––––––––––––+
+
+```
+┌─────────────────────────────────────────────────────┐
+│  backend/app/                                       │
+│  ├─ __init__.py         → Flask factory            │
+│  ├─ routes/ui.py        → HTML templates (Jinja2)  │
+│  ├─ routes/api.py       → REST JSON endpoints      │
+│  ├─ services/pixoo.py   → Pixoo 64 HTTP API        │
+│  ├─ services/fonts.py   → BMFont (bmfontify)       │
+│  ├─ services/jobs.py    → ThreadPoolExecutor       │
+│  ├─ models.py           → SQLite ORM models        │
+│  └─ templates/          → Jinja2 templates         │
+│       ├─ base.html                                 │
+│       └─ index.html                                │
+└─────────────────────────────────────────────────────┘
+          │
+          │ JSON / REST API
+          ▼
+┌─────────────────────────────────────────────────────┐
+│  frontend/src/                                      │
+│  ├─ main.ts             → TypeScript entry         │
+│  └─ styles/             → SCSS (Tabler UI)         │
+│                                                     │
+│  Development: Vite dev server (port 5173)          │
+│               ↓ proxies API to Flask (port 5000)   │
+│                                                     │
+│  Production:  npm run build                        │
+│               ↓ outputs to backend/static/dist/    │
+│               ↓ Flask serves static assets         │
+└─────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -51,23 +64,76 @@
 ## 4. Build and Runtime Flow
 
 ### Development Mode
-1. `npm run dev` (or `vite`) starts Vite dev server with HMR.
-2. Vite proxies API requests to Flask backend (`flask run` on separate port).
-3. TypeScript and SCSS are compiled on-the-fly by Vite.
-4. Frontend served by Vite (typically `localhost:5173`), backend on `localhost:5000`.
+1. **Terminal 1**: `cd frontend && npm run dev` starts Vite dev server (port 5173)
+   - HMR enabled for instant TypeScript/SCSS updates
+   - Proxies `/api/*` requests to Flask backend
+2. **Terminal 2**: `cd backend && flask run` starts Flask (port 5000)
+   - Serves Jinja2 templates (`templates/base.html`, `templates/index.html`)
+   - Base template includes Vite dev server script tags for HMR
+3. Access the app at `http://localhost:5000` (Flask serves HTML, Vite serves assets)
 
 ### Production Mode
-1. `npm run build` (or `vite build`) bundles TypeScript + SCSS → `/static/dist`.
-2. `flask run` serves HTML templates and static assets directly.
-3. No separate frontend server; Flask handles all routes.
+1. **Build Frontend**: `cd frontend && npm run build`
+   - Vite bundles TypeScript + SCSS → `backend/static/dist/`
+   - Generates `manifest.json` for asset references
+2. **Run Backend**: `cd backend && flask run`
+   - Flask serves Jinja2 templates with references to built assets
+   - No separate frontend server needed
+3. Templates automatically switch from dev (Vite HMR) to prod (static assets) based on `FLASK_ENV`
 
 ### Job Execution (Both Modes)
-5. API requests trigger background jobs for Pixoo updates or font generation.
-6. Job status is polled from UI until completion.
+- API requests (`/api/jobs`, `/api/display`, etc.) trigger background jobs
+- ThreadPoolExecutor handles Pixoo updates, font rendering, image generation
+- Frontend polls job status until completion
 
 ---
 
-## 5. Document Links
+## 5. Directory Structure
+
+```
+64board/
+├── backend/
+│   ├── app/
+│   │   ├── __init__.py         # Flask factory (create_app)
+│   │   ├── models.py           # SQLAlchemy ORM models
+│   │   ├── routes/
+│   │   │   ├── __init__.py
+│   │   │   ├── ui.py           # Template routes
+│   │   │   └── api.py          # JSON API endpoints
+│   │   ├── services/
+│   │   │   ├── __init__.py
+│   │   │   ├── pixoo.py        # Pixoo 64 HTTP client
+│   │   │   ├── fonts.py        # BMFont renderer
+│   │   │   └── jobs.py         # Background job queue
+│   │   └── templates/
+│   │       ├── base.html       # Base Jinja2 template
+│   │       └── index.html      # Main page
+│   ├── static/
+│   │   └── dist/               # Vite build output (.gitignore)
+│   ├── tests/                  # pytest tests
+│   ├── config.py               # Flask configuration
+│   ├── wsgi.py                 # WSGI entry point
+│   ├── requirements.txt        # Python dependencies
+│   └── .env.example            # Environment variables template
+├── frontend/
+│   ├── src/
+│   │   ├── main.ts             # TypeScript entry
+│   │   └── styles/             # SCSS files
+│   ├── public/                 # Static assets (images, etc.)
+│   ├── package.json            # Node dependencies
+│   ├── vite.config.ts          # Vite configuration
+│   ├── tsconfig.json           # TypeScript configuration
+│   └── .env.example            # Frontend env vars
+├── docs/
+│   └── architecture_overview.md
+├── AGENTS.md
+├── README.md
+└── .gitignore
+```
+
+---
+
+## 6. Document Links
 - **SDD:** [`docs/sdd/001_overview.md`](../sdd/001_overview.md)  
 - **ADR:** [`docs/adr/0001_choose_db.md`](../adr/0001_choose_db.md)  
 - **Root Index:** [`AGENTS.md`](../AGENTS.md)
