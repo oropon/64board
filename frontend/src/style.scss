@@ -1,6 +1,35 @@
-@import "@tabler/core/dist/css/tabler.min.css";
+@use "sass:map";
+@use "@tabler/core/scss/tabler" as *;
+
+// Google Fonts
+.dotgothic16-regular {
+  font-family: "DotGothic16", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.press-start-2p-regular {
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+// Tabler UI Overrides and Custom Styles
+@each $variant, $_ in map.merge($theme-colors, $social-colors) {
+  .badge-#{$variant} {
+    @extend .badge;
+    @extend .bg-#{$variant};
+    @extend .text-#{$variant}-fg;
+  }
+}
+
+// Custom Styles
+:root {
+  --tblr-font-sans-serif: "Press Start 2P", "DotGothic16", sans-serif;
+}
 
 body {
   min-height: 100vh;
   background: #f5f7fb;
 }
+

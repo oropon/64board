@@ -14,8 +14,15 @@
       {% endfor %}
       <script type="module" src="{{ url_for('static', filename=vite_asset('src/main.ts')) }}"></script>
     {% endif %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
   </head>
-  <body class="theme-light">
-    {% block body %}{% endblock %}
+  <body class="theme-light" data-page="{{ page_name }}" data-context="{{ page_context }}">
+    <main class="page">
+      {% include "components/navbar.html" %}
+      {% block content %}{% endblock %}
+    </main>
+    {% include "components/footer.html" %}
   </body>
 </html>
