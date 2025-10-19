@@ -4,6 +4,12 @@ export default defineConfig({
   build: {
     outDir: "../backend/static/dist",
     emptyOutDir: true,
+
+    rollupOptions: {
+      input: {
+        main: "src/main.ts",
+      },
+    },
   },
   server: {
     port: 5173,
