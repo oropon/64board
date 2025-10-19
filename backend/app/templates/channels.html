@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <div class="page-pretitle">Schedule and rotate multiple apps</div>
+        <h2 class="page-title">Channels</h2>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-body">
+  <div class="container-xl">
+    <div class="row row-cards">
+      <!-- App Card -->
+      <div class="col-sm-6 col-lg-4 d-flex">
+        <a href="/apps/calendar" class="card card-link flex-fill">
+          <div class="card-body text-center">
+            <span class="avatar avatar-xl mb-3 rounded bg-blue-lt">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                   viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="5" width="16" height="16" rx="2" />
+                <line x1="16" y1="3" x2="16" y2="7" />
+                <line x1="8" y1="3" x2="8" y2="7" />
+                <line x1="4" y1="11" x2="20" y2="11" />
+              </svg>
+            </span>
+            <h3 class="card-title">Calendar</h3>
+            <p class="text-secondary">Show your daily schedule on Pixoo</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 d-flex">
+        <a href="/apps/weather" class="card card-link flex-fill">
+          <div class="card-body text-center">
+            <span class="avatar avatar-xl mb-3 rounded bg-yellow-lt">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                   viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M3 12h1M12 3v1m8 8h1m-9 8v1m-6.3-4.7l.7-.7m12 0l.7.7m0-12l-.7.7m-12 0l-.7-.7" />
+              </svg>
+            </span>
+            <h3 class="card-title">Weather</h3>
+            <p class="text-secondary">Display current weather and forecast</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 d-flex">
+        <a href="/apps/spotify" class="card card-link flex-fill">
+          <div class="card-body text-center">
+            <span class="avatar avatar-xl mb-3 rounded bg-green-lt">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                   viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3a9 9 0 1 0 9 9" />
+                <path d="M8 11.5a8 8 0 0 1 8 0M9 15a5 5 0 0 1 6 0" />
+              </svg>
+            </span>
+            <h3 class="card-title">Spotify</h3>
+            <p class="text-secondary">Show now playing track info</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

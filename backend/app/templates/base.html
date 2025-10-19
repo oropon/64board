@@ -21,7 +21,9 @@
   <body class="theme-light" data-page="{{ page_name }}" data-context="{{ page_context }}">
     <main class="page">
       {% include "components/navbar.html" %}
-      {% block content %}{% endblock %}
+      <div class="page-wrapper">
+        {% block content %}{% endblock %}
+      </div>
     </main>
     {% include "components/footer.html" %}
   </body>
