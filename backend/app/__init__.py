@@ -15,7 +15,7 @@ def create_app() -> Flask:
     app.config["DEBUG"] = get_debug_flag()
     app.config.setdefault("USE_VITE_DEV_SERVER", app.debug)
     app.config.setdefault(
-        "VITE_MANIFEST_PATH", static_folder / "dist" / "manifest.json"
+        "VITE_MANIFEST_PATH", static_folder / "dist" / ".vite" / "manifest.json"
     )
 
     if not app.config["USE_VITE_DEV_SERVER"]:
